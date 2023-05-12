@@ -1,3 +1,4 @@
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Sequelize } from 'sequelize-typescript';
 import { Bills } from 'src/models/Bills.entity';
 import { Carts } from 'src/models/Carts.entity';
@@ -41,14 +42,15 @@ import { Votes } from 'src/models/votes.entity';
 export const databaseProviders = [
   {
     provide: 'SEQUELIZE',
-    useFactory: async () => {
+    inject: [ConfigService],
+    useFactory: async (configService: ConfigService) => {
       const sequelize = new Sequelize({
-        dialect: 'mysql',
-        host: 'localhost',
-        port: 3306,
-        username: 'root',
-        password: '',
-        database: 'ecommerce',
+        dialect: configService.get("DB"),
+        host: configService.get<string>("DB_HOST"),
+        port: configService.get<number>("DB_PORT"),
+        username: configService.get<string>("DB_USER"),
+        password: configService.get<string>("DB_PASS"),
+        database: configService.get<string>("DB_DATABASE"),
         // models: [__dirname.replace("\\config", '\\models')],
         // modelMatch: (filename, member) => {
         //   return filename.substring(0, filename.indexOf('.entity')) === member.toLowerCase();
