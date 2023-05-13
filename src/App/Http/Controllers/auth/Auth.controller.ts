@@ -171,7 +171,7 @@ export class AuthController {
     }
 
     @Post("reactivated")
-    async reActivated(@Req() req: Request, @Param("key") key: string, @Res() res: Response) {
+    async reActivated(@Req() req: Request, @Res() res: Response) {
         let token = req.cookies.accessToken;
         if (token) {
             let decode = this.authService.verifyToken(token);

@@ -68,6 +68,7 @@ export class AuthService {
 
     async generateAccessToken(username: string): Promise<string> {
         return this.jwt.signAsync({ username: username }, {
+            algorithm: "RS256",
             expiresIn: "30m",
             secret: AuthService.privateKey
         });
@@ -86,6 +87,7 @@ export class AuthService {
 
     async generateRefeshToken(username: string): Promise<string> {
         return this.jwt.signAsync({ username: username }, {
+            algorithm: "RS256",
             expiresIn: "90d",
             secret: AuthService.privateKey
         });
@@ -119,6 +121,7 @@ export class AuthService {
 
     public async generateKeyJWT(obj: Object, time: string = "15m") {
         return this.jwt.signAsync(obj, {
+            algorithm: "RS256",
             expiresIn: time,
             secret: AuthService.privateKey
         });
