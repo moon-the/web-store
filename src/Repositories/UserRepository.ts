@@ -2,7 +2,7 @@ import { Op } from "sequelize";
 import { UserLoginDTO } from "src/DTO/UserLoginDTO";
 import { UserRegisterDTO } from "src/DTO/UserRegisterDTO";
 import { Profile } from "src/models/profiles.entity";
-import { Users } from "src/models/users.entity";
+import { Users } from "src/models/Users.entity";
 import { BaseRepository } from "./BaseRepository";
 
 export class UserRepository extends BaseRepository<Users> {

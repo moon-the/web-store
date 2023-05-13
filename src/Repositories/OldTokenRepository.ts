@@ -1,6 +1,6 @@
 import { TokenDTO } from "src/DTO/TokenDTO";
 import { UserRegisterDTO } from "src/DTO/UserRegisterDTO";
-import { Token } from "src/models/token.entity";
+import { Token } from "src/models/Tokens.entity";
 import { BaseRepository } from "./BaseRepository";
 
 export class OldTokenRepository extends BaseRepository<Token> {

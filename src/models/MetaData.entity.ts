@@ -1,6 +1,6 @@
 import { Table, Column, Model, PrimaryKey, AutoIncrement, HasMany, HasOne } from 'sequelize-typescript';
-import { Users } from './users.entity';
-import { Token } from './token.entity';
+import { Users } from './Users.entity';
+import { Token } from './Tokens.entity';
 import { OldToken } from './OldToken.entity';
 import { Cookies } from './Cookies.entity';
 

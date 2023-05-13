@@ -35,9 +35,9 @@ import { Transports } from 'src/models/Transports.entity';
 import { CategorysProducts } from 'src/models/categorysProducts.entity';
 import { MetaData } from 'src/models/metadata.entity';
 import { Profile } from 'src/models/profiles.entity';
-import { Token } from 'src/models/token.entity';
-import { Untis } from 'src/models/untis.entity';
-import { Users } from 'src/models/users.entity';
+import { Token } from 'src/models/Tokens.entity';
+import { Untis } from 'src/models/Untis.entity';
+import { Users } from 'src/models/Users.entity';
 import { Votes } from 'src/models/votes.entity';
 
 export const databaseProviders = [
@@ -52,10 +52,6 @@ export const databaseProviders = [
         username: configService.get<string>("DB_USER"),
         password: configService.get<string>("DB_PASS"),
         database: configService.get<string>("DB_DATABASE"),
-        // models: [__dirname.replace("\\config", '\\models')],
-        // modelMatch: (filename, member) => {
-        //   return filename.substring(0, filename.indexOf('.entity')) === member.toLowerCase();
-        // },
       });
       sequelize.addModels([Roles, Users, MetaData, Cookies,  Configs, Token, OldToken, Profile, 
         Carts, HomeShops, Shops, Products, Bills, Categorys, CategorysProducts, Comments, ExportPrices,

@@ -3,7 +3,7 @@ import { Products } from './Products.entity';
 import { ProductsCarts } from './ProductsCarts.entity';
 import { ShippingBusiness } from './ShippingBusiness.entity';
 import { ShippingBusinessCarts } from './ShippingBusinessCarts.entity';
-import { Users } from './users.entity';
+import { Users } from './Users.entity';
 
 @Table
 export class Carts extends Model {

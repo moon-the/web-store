@@ -1,5 +1,5 @@
 import { Table, Column, Model, PrimaryKey, Unique, AllowNull, ForeignKey, BelongsTo, AutoIncrement } from 'sequelize-typescript';
-import { Users } from './users.entity';
+import { Users } from './Users.entity';
 
 @Table
 export class Profile extends Model {

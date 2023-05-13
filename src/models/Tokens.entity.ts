@@ -3,8 +3,8 @@ import { Users } from './Users.entity';
 import { MetaData } from './metadata.entity';
 
 @Table
-export class OldToken extends Model {
-   
+export class Token extends Model {
+    
     @PrimaryKey
     @AutoIncrement
     @Column
@@ -28,5 +28,6 @@ export class OldToken extends Model {
 
     @BelongsTo(()=> MetaData)
     metaData: MetaData;
+
 
 }

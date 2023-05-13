@@ -14,7 +14,7 @@ import { Carts } from './Carts.entity';
 import { ProductsCarts } from './ProductsCarts.entity';
 import { Tags } from './Tags.entity';
 import { ProductsTags } from './ProductsTags.entity';
-import { Untis } from './untis.entity';
+import { Untis } from './Untis.entity';
 import { HomeShops } from './HomeShop.entity';
 import { HomeShopsProducts } from './HomeShopProducts.entity';
 
