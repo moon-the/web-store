@@ -9,6 +9,7 @@ import { Cookies } from 'src/models/Cookies.entity';
 import { ExportPrices } from 'src/models/ExportPrices.entity';
 import { Files } from 'src/models/Files.entity';
 import { HomeShops } from 'src/models/HomeShop.entity';
+import { HomeShopsProducts } from 'src/models/HomeShopProducts.entity';
 import { ImportPrices } from 'src/models/ImportPrices.entity';
 import { Intros } from 'src/models/Intros.entity';
 import { Messages } from 'src/models/Messages.entity';
@@ -58,7 +59,7 @@ export const databaseProviders = [
       });
       sequelize.addModels([Roles, Users, MetaData, Cookies,  Configs, Token, OldToken, Profile, 
         Carts, HomeShops, Shops, Products, Bills, Categorys, CategorysProducts, Comments, ExportPrices,
-        ImportPrices, Files,Intros, Messages, Participates, Pays, Pins, PinsProducts, ProductsCarts, ProductsFiles,
+        ImportPrices, Files,Intros, Messages, Participates, Pays, Pins, PinsProducts, HomeShopsProducts, ProductsCarts, ProductsFiles,
         ProductsTags, Replys, Rooms, Sales, ShippingBusiness, ShippingBusinessCarts, ShopsProducts, Tags, Transports, Untis, Votes
       ]);
       //sequelize.addModels([__dirname +  '../models']);

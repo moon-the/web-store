@@ -13,6 +13,5 @@ export class UserRegisterDTO {
     @IsEmail()
     email: string;
 
-    salt: string;
 
 }

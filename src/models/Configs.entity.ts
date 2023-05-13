@@ -18,4 +18,7 @@ export class Configs extends Model {
     @Column
     display: string;
 
+    @Column
+    publicKey: string;
+
 }

@@ -26,7 +26,6 @@ export class UserRepository extends BaseRepository<Users> {
         return Users.create({
             userName: user.username,
             password: user.password,
-            salt: user.salt,
             email: user.email
         });
     }

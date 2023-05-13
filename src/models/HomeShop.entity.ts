@@ -1,5 +1,7 @@
-import { Table, Column, Model, PrimaryKey, AutoIncrement, ForeignKey, BelongsTo } from 'sequelize-typescript';
+import { Table, Column, Model, PrimaryKey, AutoIncrement, ForeignKey, BelongsTo, BelongsToMany } from 'sequelize-typescript';
 import { Shops } from './Shops.enity';
+import { Products } from './Products.entity';
+import { HomeShopsProducts } from './HomeShopProducts.entity';
 
 
 @Table
@@ -17,4 +19,6 @@ export class HomeShops extends Model {
     @BelongsTo(()=> Shops)
     shop: Shops;
 
+    @BelongsToMany(() => Products, () => HomeShopsProducts)
+    products: Products[];
 }

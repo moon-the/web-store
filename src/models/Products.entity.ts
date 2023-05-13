@@ -15,6 +15,8 @@ import { ProductsCarts } from './ProductsCarts.entity';
 import { Tags } from './Tags.entity';
 import { ProductsTags } from './ProductsTags.entity';
 import { Untis } from './untis.entity';
+import { HomeShops } from './HomeShop.entity';
+import { HomeShopsProducts } from './HomeShopProducts.entity';
 
 @Table
 export class Products extends Model {
@@ -64,4 +66,7 @@ export class Products extends Model {
 
     @BelongsToMany(() => Tags, () => ProductsTags)
     tags: Tags[];
+
+    @BelongsToMany(() => HomeShops, () => HomeShopsProducts)
+    homeShops: HomeShops[];
 }

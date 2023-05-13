@@ -17,9 +17,9 @@ import { AuthAPIModule } from './api/Module/Auth.module';
 import { HomeModule } from './App/Http/Controllers/Module/Home.module';
 
 @Module({
-  imports: [DatabaseModule, SearchModule,HomeModule, AuthModule,AuthAPIModule, FileModule, ConfigModule.forRoot({
+  imports: [SearchModule,HomeModule, AuthModule,AuthAPIModule, FileModule, ConfigModule.forRoot({
     isGlobal: true,
-  })],
+  }), DatabaseModule],
   controllers: [AppController],
   providers: [AppService, UserService],
 })

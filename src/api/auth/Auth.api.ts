@@ -23,10 +23,7 @@ export class AuthAPI {
             let check = await bcrypt.compare(req.password, user.password);
             if (check) {
                 let token = await this.authService.getToken(user.userName);
-                let tokenDTO = new TokenDTO();
-                tokenDTO.refreshToken = token.refreshToken;
-                tokenDTO.idUser = user.id;
-                await this.authService.setToken(tokenDTO);
+                await this.authService.setToken(user.id, token.refreshToken);
                 res.cookie("refreshToken", token.refreshToken);
                 res.cookie("accessToken", token.accessToken);
                 return token;
@@ -47,9 +44,9 @@ export class AuthAPI {
     async register(@Body() req: UserRegisterDTO) {
         let user = await this.authService.findByUserNameOrEmail(req.username, req.email);
         if (!user) {
-            req.salt = await bcrypt.genSalt();
-            req.password = await bcrypt.hash(req.password, req.salt);
-            user = await this.authService.register(req);
+            let salt = await bcrypt.genSalt();
+            req.password = await bcrypt.hash(req.password, salt);
+            user = await this.authService.register(req.username,req.email, req.password);
             if (user) {
                 return { status: 200, message: "OK" };
             }

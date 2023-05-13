@@ -12,7 +12,7 @@ import { ConfigService } from '@nestjs/config';
 import { ActiveAccountEmail } from 'src/App/Mail/ActiveAccount.email';
 
 
-@Controller("user")
+@Controller("auth")
 export class AuthController {
 
     constructor(private authService: AuthService, private config: ConfigService) { }
@@ -48,10 +48,7 @@ export class AuthController {
                 let check = await bcrypt.compare(req.password, user.password);
                 if (check) {
                     let token = await this.authService.getToken(user.userName);
-                    let tokenDTO = new TokenDTO();
-                    tokenDTO.refreshToken = token.refreshToken;
-                    tokenDTO.idUser = user.id;
-                    await this.authService.setToken(tokenDTO);
+                    await this.authService.setToken(user.id, token.refreshToken);
                     res.cookie("refreshToken", token.refreshToken);
                     res.cookie("accessToken", token.accessToken);
                     return token;
@@ -76,17 +73,21 @@ export class AuthController {
         return {};
     }
 
+    @Get("getkey")
+    getPublicKey() {
+        return AuthService.getPublicKey();
+    }
 
     @UsePipes(new ValidationPipe())
     @Post("register")
     async register(@Body() req: UserRegisterDTO, @Req() requet: Request) {
         let user = await this.authService.findByUserNameOrEmail(req.username, req.email);
         if (!user) {
-            req.salt = await bcrypt.genSalt();
-            req.password = await bcrypt.hash(req.password, req.salt);
-            user = await this.authService.register(req);
+            let salt = await bcrypt.genSalt();
+            req.password = await bcrypt.hash(req.password, salt);
+            user = await this.authService.register(req.username,req.email, req.password);
             if (user) {
-                let token = await this.authService.generateKeyJWT({ id: user.id });
+                let token = await this.authService.generateKeyJWT({ idActivated: user.id });
                 let activated = new ActiveAccountEmail(this.config);
                 let link = `${requet.protocol}://${requet.get("host")}/activated/${token}`
                 activated.create(req.email, link);
@@ -152,15 +153,16 @@ export class AuthController {
     }
 
     @UsePipes(new ValidationPipe())
-    @Post("forgot_password")
+    @Post("forget_password")
     async forgot(@Body() req: ForgotPasswordDTO, @Req() requet: Request) {
         const user = await this.authService.findByUserNameAndEmail(req.username, req.email);
         if (user) {
-            let token = await this.authService.generateKeyJWT({ id: user.id });
+            let token = await this.authService.generateKeyJWT({ idForget: user.id });
             let activated = new ActiveAccountEmail(this.config);
             let link = `${requet.protocol}://${requet.get("host")}/reset_password/${token}`
             activated.create(req.email, link);
             activated.sendEmail();
+            return "OK";
         }
         return {
             status: 402,
@@ -173,7 +175,7 @@ export class AuthController {
         let token = req.cookies.accessToken;
         if (token) {
             let decode = this.authService.verifyToken(token);
-            let idUser = (<any>decode).id || null;
+            let idUser = (<any>decode).idActivated || null;
             if (idUser){
                 let user = await this.authService.findById(idUser);
                 let activated = new ActiveAccountEmail(this.config);
@@ -190,7 +192,7 @@ export class AuthController {
     async activated(@Param("key") key: string,@Req() req: Request, @Res() res: Response) {
         const decode = await this.authService.verifyToken(key);
         if (decode) {
-            let idUser = (<any>decode).id;
+            let idUser = (<any>decode).idActivated || null;
             let user = await this.authService.findById(idUser);
             if (user) {
                 if (!user.activated) {
@@ -222,7 +224,7 @@ export class AuthController {
         if (req.newPassword == req.confirmPassword) {
             const decode = await this.authService.verifyToken(key);
             if (decode) {
-                let idUser = (<any>decode).id;
+                let idUser = (<any>decode).idForget || null;
                 let user = await this.authService.findById(idUser);
                 let salt = await bcrypt.genSalt();
                 let password = await bcrypt.hash(req.newPassword, salt);
