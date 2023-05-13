@@ -18,4 +18,10 @@ export class Configs extends Model {
     @Column
     display: string;
 
+<<<<<<< HEAD
+=======
+    @Column
+    publicKey: string;
+
+>>>>>>> 3adb92c4f1a8bb416577d7500428ec553160f826
 }

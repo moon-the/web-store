@@ -1,33 +1,19 @@
 import { Table, Column, Model, PrimaryKey, Unique, AllowNull, ForeignKey, BelongsTo, AutoIncrement } from 'sequelize-typescript';
-<<<<<<< HEAD
-import { Users } from './users.entity';
-=======
 import { Users } from './Users.entity';
->>>>>>> 3adb92c4f1a8bb416577d7500428ec553160f826
+import { MetaData } from './metadata.entity';
 
 @Table
-export class Profile extends Model {
+export class Token extends Model {
+    
     @PrimaryKey
     @AutoIncrement
     @Column
     id: number;
 
+    @Unique
     @AllowNull(false)
     @Column
-    fullName: string;
-
-    @Column
-    address: string;
-
-    @Column
-    avatar: string;
-
-    @Column
-    phoneNumber: string;
-
-    @AllowNull(false)
-    @Column
-    gender: string;
+    refreshToken: string;
 
     @ForeignKey(()=> Users)
     @Column
@@ -35,5 +21,13 @@ export class Profile extends Model {
 
     @BelongsTo(()=> Users)
     user: Users;
+
+    @ForeignKey(()=> MetaData)
+    @Column
+    idMetaData: number;
+
+    @BelongsTo(()=> MetaData)
+    metaData: MetaData;
+
 
 }

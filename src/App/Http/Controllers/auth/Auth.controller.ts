@@ -12,7 +12,11 @@ import { ConfigService } from '@nestjs/config';
 import { ActiveAccountEmail } from 'src/App/Mail/ActiveAccount.email';
 
 
+<<<<<<< HEAD
 @Controller("user")
+=======
+@Controller("auth")
+>>>>>>> 3adb92c4f1a8bb416577d7500428ec553160f826
 export class AuthController {
 
     constructor(private authService: AuthService, private config: ConfigService) { }
@@ -48,10 +52,14 @@ export class AuthController {
                 let check = await bcrypt.compare(req.password, user.password);
                 if (check) {
                     let token = await this.authService.getToken(user.userName);
+<<<<<<< HEAD
                     let tokenDTO = new TokenDTO();
                     tokenDTO.refreshToken = token.refreshToken;
                     tokenDTO.idUser = user.id;
                     await this.authService.setToken(tokenDTO);
+=======
+                    await this.authService.setToken(user.id, token.refreshToken);
+>>>>>>> 3adb92c4f1a8bb416577d7500428ec553160f826
                     res.cookie("refreshToken", token.refreshToken);
                     res.cookie("accessToken", token.accessToken);
                     return token;
@@ -76,17 +84,32 @@ export class AuthController {
         return {};
     }
 
+<<<<<<< HEAD
+=======
+    @Get("getkey")
+    getPublicKey() {
+        return AuthService.getPublicKey();
+    }
+>>>>>>> 3adb92c4f1a8bb416577d7500428ec553160f826
 
     @UsePipes(new ValidationPipe())
     @Post("register")
     async register(@Body() req: UserRegisterDTO, @Req() requet: Request) {
         let user = await this.authService.findByUserNameOrEmail(req.username, req.email);
         if (!user) {
+<<<<<<< HEAD
             req.salt = await bcrypt.genSalt();
             req.password = await bcrypt.hash(req.password, req.salt);
             user = await this.authService.register(req);
             if (user) {
                 let token = await this.authService.generateKeyJWT({ id: user.id });
+=======
+            let salt = await bcrypt.genSalt();
+            req.password = await bcrypt.hash(req.password, salt);
+            user = await this.authService.register(req.username,req.email, req.password);
+            if (user) {
+                let token = await this.authService.generateKeyJWT({ idActivated: user.id });
+>>>>>>> 3adb92c4f1a8bb416577d7500428ec553160f826
                 let activated = new ActiveAccountEmail(this.config);
                 let link = `${requet.protocol}://${requet.get("host")}/activated/${token}`
                 activated.create(req.email, link);
@@ -152,15 +175,27 @@ export class AuthController {
     }
 
     @UsePipes(new ValidationPipe())
+<<<<<<< HEAD
     @Post("forgot_password")
     async forgot(@Body() req: ForgotPasswordDTO, @Req() requet: Request) {
         const user = await this.authService.findByUserNameAndEmail(req.username, req.email);
         if (user) {
             let token = await this.authService.generateKeyJWT({ id: user.id });
+=======
+    @Post("forget_password")
+    async forgot(@Body() req: ForgotPasswordDTO, @Req() requet: Request) {
+        const user = await this.authService.findByUserNameAndEmail(req.username, req.email);
+        if (user) {
+            let token = await this.authService.generateKeyJWT({ idForget: user.id });
+>>>>>>> 3adb92c4f1a8bb416577d7500428ec553160f826
             let activated = new ActiveAccountEmail(this.config);
             let link = `${requet.protocol}://${requet.get("host")}/reset_password/${token}`
             activated.create(req.email, link);
             activated.sendEmail();
+<<<<<<< HEAD
+=======
+            return "OK";
+>>>>>>> 3adb92c4f1a8bb416577d7500428ec553160f826
         }
         return {
             status: 402,
@@ -173,7 +208,11 @@ export class AuthController {
         let token = req.cookies.accessToken;
         if (token) {
             let decode = this.authService.verifyToken(token);
+<<<<<<< HEAD
             let idUser = (<any>decode).id || null;
+=======
+            let idUser = (<any>decode).idActivated || null;
+>>>>>>> 3adb92c4f1a8bb416577d7500428ec553160f826
             if (idUser){
                 let user = await this.authService.findById(idUser);
                 let activated = new ActiveAccountEmail(this.config);
@@ -190,7 +229,11 @@ export class AuthController {
     async activated(@Param("key") key: string,@Req() req: Request, @Res() res: Response) {
         const decode = await this.authService.verifyToken(key);
         if (decode) {
+<<<<<<< HEAD
             let idUser = (<any>decode).id;
+=======
+            let idUser = (<any>decode).idActivated || null;
+>>>>>>> 3adb92c4f1a8bb416577d7500428ec553160f826
             let user = await this.authService.findById(idUser);
             if (user) {
                 if (!user.activated) {
@@ -222,7 +265,11 @@ export class AuthController {
         if (req.newPassword == req.confirmPassword) {
             const decode = await this.authService.verifyToken(key);
             if (decode) {
+<<<<<<< HEAD
                 let idUser = (<any>decode).id;
+=======
+                let idUser = (<any>decode).idForget || null;
+>>>>>>> 3adb92c4f1a8bb416577d7500428ec553160f826
                 let user = await this.authService.findById(idUser);
                 let salt = await bcrypt.genSalt();
                 let password = await bcrypt.hash(req.newPassword, salt);

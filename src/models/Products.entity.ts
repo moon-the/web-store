@@ -14,7 +14,13 @@ import { Carts } from './Carts.entity';
 import { ProductsCarts } from './ProductsCarts.entity';
 import { Tags } from './Tags.entity';
 import { ProductsTags } from './ProductsTags.entity';
+<<<<<<< HEAD
 import { Untis } from './untis.entity';
+=======
+import { Untis } from './Untis.entity';
+import { HomeShops } from './HomeShop.entity';
+import { HomeShopsProducts } from './HomeShopProducts.entity';
+>>>>>>> 3adb92c4f1a8bb416577d7500428ec553160f826
 
 @Table
 export class Products extends Model {
@@ -64,4 +70,10 @@ export class Products extends Model {
 
     @BelongsToMany(() => Tags, () => ProductsTags)
     tags: Tags[];
+<<<<<<< HEAD
+=======
+
+    @BelongsToMany(() => HomeShops, () => HomeShopsProducts)
+    homeShops: HomeShops[];
+>>>>>>> 3adb92c4f1a8bb416577d7500428ec553160f826
 }

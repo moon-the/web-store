@@ -13,6 +13,9 @@ export class UserRegisterDTO {
     @IsEmail()
     email: string;
 
+<<<<<<< HEAD
     salt: string;
+=======
+>>>>>>> 3adb92c4f1a8bb416577d7500428ec553160f826
 
 }
