@@ -1,7 +1,6 @@
 import { Table, Column, Model, PrimaryKey, AutoIncrement, ForeignKey, BelongsTo, BelongsToMany } from 'sequelize-typescript';
-import { MetaData } from './metadata.entity';
 import { Products } from './Products.entity';
-import { CategorysProducts } from './categorysProducts.entity';
+import { CategorysProducts } from './CategorysProducts.entity';
 import { Intros } from './Intros.entity';
 
 @Table

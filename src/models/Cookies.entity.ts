@@ -1,5 +1,5 @@
 import { Table, Column, Model, PrimaryKey, AutoIncrement, ForeignKey, BelongsTo } from 'sequelize-typescript';
-import { MetaData } from './metadata.entity';
+import { MetaData } from './MetaData.entity';
 
 @Table
 export class Cookies extends Model {

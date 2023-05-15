@@ -1,4 +1,4 @@
-import { Table, Column, Model, PrimaryKey, Unique, AllowNull, Length, AutoIncrement, HasOne, HasMany, BelongsToMany } from 'sequelize-typescript';
+import { Table, Column, Model, PrimaryKey, AllowNull, AutoIncrement, HasMany, BelongsToMany } from 'sequelize-typescript';
 import { Messages } from './Messages.entity';
 import { Users } from './Users.entity';
 import { Participates } from './Participates.entity';

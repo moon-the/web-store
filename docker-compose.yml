@@ -1,0 +1,27 @@
+services:
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      - MYSQL_DATABASE=ecommerce
+      - MYSQL_ROOT_PASSWORD=123
+    ports:
+      - '3306:3306' 
+  redis:
+    container_name: redis
+    image: redis:latest
+    command: ["redis-server", "--bind", "redis", "--port", "6379"]
+  api:
+    build:
+      dockerfile: Dockerfile
+    volumes:
+      - .:/usr/src/app
+    env_file:
+    - .env
+    # Run a command against the development stage of the image
+    command: npm run start
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
+      - redis

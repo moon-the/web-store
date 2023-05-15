@@ -1,7 +1,4 @@
-import { Table, Column, Model, PrimaryKey, Unique, AllowNull, Length, AutoIncrement, HasOne, ForeignKey, HasMany, BelongsToMany } from 'sequelize-typescript';
-import { HomeShops } from './HomeShop.entity';
-import { Products } from './Products.entity';
-import { ShopsProducts } from './ShopsProducts.entity';
+import { Table, Column, Model, PrimaryKey, AllowNull, AutoIncrement} from 'sequelize-typescript';
 
 @Table
 export class Transports extends Model {

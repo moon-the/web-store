@@ -1,6 +1,6 @@
 import { Table, Column, Model, PrimaryKey, Unique, AllowNull, ForeignKey, BelongsTo, AutoIncrement } from 'sequelize-typescript';
 import { Users } from './Users.entity';
-import { MetaData } from './metadata.entity';
+import { MetaData } from './MetaData.entity';
 
 @Table
 export class Token extends Model {

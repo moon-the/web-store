@@ -20,6 +20,11 @@ export abstract class BaseRepository<M extends Model> implements IRepository {
         return model.destroy();
     }
 
+    async delete(model: M) {
+        //@ts-ignore
+        return model.destroy();
+    }
+
     save(type: any):Promise<M> {
        return type.save();
     }

@@ -32,13 +32,13 @@ import { Shops } from 'src/models/Shops.enity';
 import { ShopsProducts } from 'src/models/ShopsProducts.entity';
 import { Tags } from 'src/models/Tags.entity';
 import { Transports } from 'src/models/Transports.entity';
-import { CategorysProducts } from 'src/models/categorysProducts.entity';
-import { MetaData } from 'src/models/metadata.entity';
-import { Profile } from 'src/models/profiles.entity';
+import { CategorysProducts } from 'src/models/CategorysProducts.entity';
+import { MetaData } from 'src/models/MetaData.entity';
+import { Profile } from 'src/models/Profiles.entity';
 import { Token } from 'src/models/Tokens.entity';
 import { Untis } from 'src/models/Untis.entity';
 import { Users } from 'src/models/Users.entity';
-import { Votes } from 'src/models/votes.entity';
+import { Votes } from 'src/models/Votes.entity';
 
 export const databaseProviders = [
   {

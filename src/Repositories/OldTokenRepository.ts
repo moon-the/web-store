@@ -1,5 +1,4 @@
 import { TokenDTO } from "src/DTO/TokenDTO";
-import { UserRegisterDTO } from "src/DTO/UserRegisterDTO";
 import { Token } from "src/models/Tokens.entity";
 import { BaseRepository } from "./BaseRepository";
 

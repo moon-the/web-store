@@ -1,9 +1,4 @@
-import { Table, Column, Model, PrimaryKey, Unique, AllowNull, Length, HasMany, HasOne, AutoIncrement, ForeignKey, BelongsTo } from 'sequelize-typescript';
-import { OldToken } from './OldToken.entity';
-import { Profile } from './profiles.entity';
-import { Token } from './Tokens.entity';
-import { Roles } from './Roles.entity';
-import { Pays } from './Pays.entity';
+import { Table, Column, Model, ForeignKey } from 'sequelize-typescript';
 import { Shops } from './Shops.enity';
 import { Products } from './Products.entity';
 

@@ -1,9 +1,10 @@
 import { Op } from "sequelize";
 import { UserLoginDTO } from "src/DTO/UserLoginDTO";
 import { UserRegisterDTO } from "src/DTO/UserRegisterDTO";
-import { Profile } from "src/models/profiles.entity";
+import { Profile } from "src/models/Profiles.entity";
 import { Users } from "src/models/Users.entity";
 import { BaseRepository } from "./BaseRepository";
+import { Roles } from "src/models/Roles.entity";
 
 export class UserRepository extends BaseRepository<Users> {
     constructor() {
@@ -34,7 +35,8 @@ export class UserRepository extends BaseRepository<Users> {
         return Users.findOne({
             where: {
                 userName: username
-            }
+            }, 
+            include: [Profile, Roles]
         });
     }
 

@@ -1,6 +1,5 @@
 import { Table, Column, Model, PrimaryKey, Unique, AllowNull, ForeignKey, BelongsTo, AutoIncrement } from 'sequelize-typescript';
-import { Products } from './Products.entity';
-import { Votes } from './votes.entity';
+import { Votes } from './Votes.entity';
 
 @Table
 export class Comments extends Model {

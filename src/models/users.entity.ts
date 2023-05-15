@@ -1,12 +1,13 @@
 import { Table, Column, Model, PrimaryKey, Unique, AllowNull, Length, HasMany, HasOne, AutoIncrement, ForeignKey, BelongsTo, BelongsToMany } from 'sequelize-typescript';
 import { OldToken } from './OldToken.entity';
-import { Profile } from './profiles.entity';
+import { Profile } from './Profiles.entity';
 import { Token } from './Tokens.entity';
 import { Roles } from './Roles.entity';
 import { Pays } from './Pays.entity';
 import { Rooms } from './Rooms.entity';
 import { Participates } from './Participates.entity';
 import { Carts } from './Carts.entity';
+import { Shops } from './Shops.enity';
 
 @Table
 export class Users extends Model {
@@ -37,6 +38,9 @@ export class Users extends Model {
 
     @HasOne(()=> Profile)
     profile: Profile;
+
+    @HasOne(()=> Shops)
+    shop: Shops;
 
     @HasMany(()=> Token)
     token: Token[];

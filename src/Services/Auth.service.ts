@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { ConflictException, Inject, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { OldToken } from "src/models/OldToken.entity";
@@ -7,7 +7,15 @@ import { Users } from "src/models/Users.entity";
 import { OldTokenRepository } from "src/Repositories/OldTokenRepository";
 import { TokenRepository } from "src/Repositories/TokenRepository";
 import { UserRepository } from "src/Repositories/UserRepository";
+import { Cache } from "cache-manager";
 import * as crypto from "crypto";
+import { CACHE_MANAGER } from "@nestjs/cache-manager";
+import { UserLoginDTO } from "src/DTO/UserLoginDTO";
+import * as bcrypt from 'bcrypt';
+import { UserRegisterDTO } from "src/DTO/UserRegisterDTO";
+import { ActiveAccountEmail } from "src/App/Mail/ActiveAccount.email";
+import { ForgotPasswordDTO } from "src/DTO/ForgotPasswordDTO";
+import { ResetPasswordDTO } from "src/DTO/ResetPasswordDTO";
 
 
 @Injectable()
@@ -17,7 +25,7 @@ export class AuthService {
     private oldToken: OldTokenRepository;
     private static privateKey: string = null;
     private static publicKey: string = null;
-    constructor(private jwt: JwtService, private config: ConfigService) {
+    constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache, private jwt: JwtService, private config: ConfigService) {
         this.userRepository = new UserRepository();
         this.token = new TokenRepository();
         this.oldToken = new OldTokenRepository();
@@ -35,20 +43,138 @@ export class AuthService {
                 format: 'pem'
             }
         })
-       AuthService.privateKey = privateKey;
-       AuthService.publicKey = publicKey;
+        AuthService.privateKey = privateKey;
+        AuthService.publicKey = publicKey;
     }
 
     static getPublicKey(): string {
         return this.publicKey;
     }
 
-    async register(username: string, email: string, password: string): Promise<Users> {
-        let user = new Users();
-        user.email = email; user.userName = username, user.password = password;
-        user.activated = false;
-        return this.userRepository.save(user);
+    async login(user: UserLoginDTO) {
+        let u = await this.findByUserNameOrEmail(user.username, user.username);
+        if (u) {
+            let check = await bcrypt.compare(user.password, u.password);
+            if (check) {
+                let refreshToken = await this.generateRefeshToken(u.userName);
+                let user = await this.findByUserName(u.userName);
+                this.cacheManager.set(refreshToken, user, 90 * 1000 * 60 * 60 * 24);
+                let token = {
+                    accessToken: await this.generateAccessToken(u.userName),
+                    refreshToken: refreshToken
+                }
+                if (u.activated) {
+                    await this.setToken(u.id, token.refreshToken);
+                    return token;
+                } else {
+                    throw new UnauthorizedException("Tài Khoản chưa được kích hoạt")
+                }
+            }
+            else {
+                throw new UnauthorizedException("Sai Mật Khẩu")
+            }
+        }
+        else {
+            throw new NotFoundException("Không tìm thấy tài khoản");
+        }
     }
+
+    async register(user: UserRegisterDTO, link: string) {
+        let u = await this.findByUserNameOrEmail(user.username, user.email);
+        if (!u) {
+            let salt = await bcrypt.genSalt();
+            user.password = await bcrypt.hash(user.password, salt);
+            u = new Users();
+            u.email = user.email; u.userName = user.username, u.password = user.password;
+            u.activated = false;
+            u = await this.userRepository.save(user);
+            delete u.password;
+            let token = await this.generateKeyJWT({ idActivated: u.id });
+            let activated = new ActiveAccountEmail(this.config);
+            activated.create(user.email, link + token);
+            activated.sendEmail();
+            return "OK";
+        }
+        else {
+            if (user.username == u.userName)
+                throw new ConflictException("username đã tồn tại")
+            else
+                throw new ConflictException("email đã tồn tại")
+        }
+    }
+
+    async forgetPassword(forget: ForgotPasswordDTO, host: string) {
+        const user = await this.findByUserNameAndEmail(forget.username, forget.email);
+        if (user) {
+            let token = await this.generateKeyJWT({ idForget: user.id });
+            let activated = new ActiveAccountEmail(this.config);
+            activated.create(forget.email, host + token);
+            activated.sendEmail();
+            return "OK";
+        }
+        throw new UnauthorizedException("Yêu cầu không hợp lệ");
+    }
+
+    async resetPassword(key: string, resetPass: ResetPasswordDTO) {
+        if (resetPass.newPassword == resetPass.confirmPassword) {
+            const decode = await this.verifyToken(key);
+            if (decode) {
+                let idUser = (<any>decode).idForget;
+                let user = await this.findById(idUser);
+                if (user) {
+                    let salt = await bcrypt.genSalt();
+                    let password = await bcrypt.hash(resetPass.newPassword, salt);
+                    user.password = password;
+                    user = await this.updateUser(user);
+                    return "OK";
+                }
+            }
+            throw new UnauthorizedException("key reset password error");
+        }
+        throw new NotFoundException("confirm password dose not match");
+    }
+
+    async logout(refreshToken: string) {
+        if (refreshToken) {
+            let token = await this.findToken(refreshToken);
+            if (token) {
+                this.deleteToken(token);
+                return "OK";
+            }
+        }
+        throw new NotFoundException("");
+    }
+
+    async getToken(t: string) {
+        let token = <any> (await this.findToken(t));
+        if (token) {
+            const decode = await this.verifyToken(t);
+            if (decode) {
+                let user = (<any>decode).username;
+                return {
+                    accessToken: await this.generateAccessToken(user),
+                    refreshToken: t
+                }
+            }
+            else throw new UnauthorizedException("Mã Token hết hạn");
+        }
+        else throw new UnauthorizedException("Mã Token không đúng hoặc đã hết hạn")
+    }
+
+    async reactivated(token: string, link: string) {
+        let decode = this.verifyToken(token);
+        let username = (<any>decode).username || null;
+        if (username) {
+            let user = await this.findByUserName(username);
+            let token_ = await this.generateKeyJWT({ idActivated: user.id });
+            let activated = new ActiveAccountEmail(this.config);
+            activated.create(user.email, link+ token_);
+            activated.sendEmail();
+            return "OK";
+        }
+        throw new NotFoundException("Đường dẫn không đúng");
+    }
+
 
     public async findByUserNameOrEmail(username: string, email: string): Promise<Users> {
         return this.userRepository.findByUserNameOrEmail(username, email);
@@ -59,7 +185,12 @@ export class AuthService {
     }
 
     public async findByUserName(username: string): Promise<Users> {
-        return this.userRepository.findByUserName(username);
+        let user = <Users>await this.cacheManager.get(username);
+        if (!user) {
+            user = await this.userRepository.findByUserName(username);
+            await this.cacheManager.set(username, user);
+        }
+        return user;
     }
 
     public async findById(id: number): Promise<Users> {
@@ -93,31 +224,35 @@ export class AuthService {
         });
     }
 
-    setToken(idUser: number, token: string): Promise<Token> {
+    async setToken(idUser: number, token: string) {
         const newToken = new Token();
         newToken.idUser = idUser;
         newToken.refreshToken = token;
-        return this.token.save(newToken);
+        return await this.token.save(newToken);
     }
 
-    findToken(token: string): Promise<Token> {
-        return this.token.findByToken(token);
+    async findToken(token: string) {
+        let t = <Token> await this.cacheManager.get(token);
+        if (!t) {
+            let token_ = await this.token.findByToken(token);
+            if(token_) 
+            this.cacheManager.set(token, token_.user.userName);
+            else throw new UnauthorizedException("token không đúng") 
+        }
+        return t;
     }
 
     public async deleteToken(token: Token) {
+        this.cacheManager.del(token.refreshToken);
         let oldToken = new OldToken();
         oldToken.idUser = token.idUser;
         oldToken.refreshToken = token.refreshToken;
+        oldToken.idMetaData = token.idMetaData;
         this.oldToken.save(oldToken);
         token.destroy();
     }
 
-    public async getToken(username: string): Promise<{ accessToken: string, refreshToken: string }> {
-        return {
-            accessToken: await this.generateAccessToken(username),
-            refreshToken: await this.generateRefeshToken(username)
-        }
-    }
+
 
     public async generateKeyJWT(obj: Object, time: string = "15m") {
         return this.jwt.signAsync(obj, {
@@ -134,7 +269,27 @@ export class AuthService {
     public async findByUserNameAndEmail(username: string, email: string): Promise<Users> {
         return this.userRepository.findByUserNameAndEmail(username, email);
     }
-    public async activated(user: Users): Promise<Users> {
-        return this.userRepository.update(user);
+    public async activated(key: string) {
+        const decode = await this.verifyToken(key);
+        if (decode) {
+            let idUser = (<any>decode).idActivated || null;
+            let user = await this.findById(idUser);
+            if (user) {
+                if (!user.activated) {
+                    user.activated = !user.activated;
+                    user = await this.userRepository.update(user);
+                    if (user != null) {
+                        return "Ok";
+                    }
+                }
+                else {
+                    throw new ConflictException();
+                }
+            }
+            else {
+                throw new UnauthorizedException("mã kích hoạt không hợp lệ")
+            }
+        }
+        throw new UnauthorizedException("Đường dẫn không hợp lệ");
     }
 }

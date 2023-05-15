@@ -1,4 +1,4 @@
-import { Table, Column, Model, PrimaryKey, Unique, AllowNull, Length, HasMany, HasOne, AutoIncrement, ForeignKey, BelongsTo } from 'sequelize-typescript';
+import { Table, Column, Model, ForeignKey } from 'sequelize-typescript';
 import { Products } from './Products.entity';
 import { Categorys } from './Categorys.entity';
 

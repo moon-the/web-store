@@ -1,6 +1,5 @@
-import { Table, Column, Model, PrimaryKey, Unique, AllowNull, ForeignKey, BelongsTo, AutoIncrement } from 'sequelize-typescript';
-import { Products } from './Products.entity';
-import { Votes } from './votes.entity';
+import { Table, Column, Model, PrimaryKey, AllowNull, AutoIncrement } from 'sequelize-typescript';
+
 
 @Table
 export class Configs extends Model {

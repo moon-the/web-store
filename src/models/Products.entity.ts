@@ -2,7 +2,7 @@ import { Table, Column, Model, PrimaryKey, Unique, AllowNull, ForeignKey, Belong
 import { Shops } from './Shops.enity';
 import { ShopsProducts } from './ShopsProducts.entity';
 import { Categorys } from './Categorys.entity';
-import { CategorysProducts } from './categorysProducts.entity';
+import { CategorysProducts } from './CategorysProducts.entity';
 import { Intros } from './Intros.entity';
 import { ExportPrices } from './ExportPrices.entity';
 import { ImportPrices } from './ImportPrices.entity';
