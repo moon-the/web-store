@@ -16,6 +16,24 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "types": [
+      "reflect-metadata",
+      "jest"
+    ],
+    "paths": {
+      "@app/common": [
+        "libs/common/src"
+      ],
+      "@app/common/*": [
+        "libs/common/src/*"
+      ],
+      "@app/mail": [
+        "libs/mail/src"
+      ],
+      "@app/mail/*": [
+        "libs/mail/src/*"
+      ]
+    }
   }
 }
