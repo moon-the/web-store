@@ -3,6 +3,12 @@
   "collection": "@nestjs/schematics",
   "sourceRoot": "apps/ecommerce-api-gateway/src",
   "compilerOptions": {
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+    "deleteOutDir": true
+=======
+>>>>>>> main
     "deleteOutDir": true,
     "webpack": true,
     "tsConfigPath": "apps/ecommerce-api-gateway/tsconfig.app.json"
@@ -54,6 +60,20 @@
       "compilerOptions": {
         "tsConfigPath": "apps/payment/tsconfig.app.json"
       }
+<<<<<<< HEAD
     }
+=======
+    },
+    "products": {
+      "type": "application",
+      "root": "apps/products",
+      "entryFile": "main",
+      "sourceRoot": "apps/products/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/products/tsconfig.app.json"
+      }
+    }
+>>>>>>> Stashed changes
+>>>>>>> main
   }
 }

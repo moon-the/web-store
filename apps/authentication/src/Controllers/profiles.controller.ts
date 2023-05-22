@@ -1,8 +1,14 @@
 import { Controller, Get } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
+<<<<<<< HEAD
 import { UserLoginDTO } from '@app/common/authentication/UserLoginDTO';
 import { AuthenticationService } from '../Services/authentication.service';
 import { CreateProfile } from '@app/common/authentication/CreateProfile.dto';
+=======
+import { UserLoginDTO } from '@app/common/Authentication/UserLoginDTO';
+import { AuthenticationService } from '../Services/authentication.service';
+import { CreateProfile } from '@app/common/Authentication/CreateProfile.dto';
+>>>>>>> main
 
 @Controller("authentication")
 export class ProfileController {
