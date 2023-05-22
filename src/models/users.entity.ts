@@ -39,6 +39,22 @@ export class Users extends Model {
     @Column
     activated: boolean;
 
+    @AllowNull(false)
+    @Column
+    keyActivated: string;
+
+    @Column
+    keyForgetPassword: string;
+
+    @AllowNull(false)
+    @Column
+    open2FA: boolean;
+
+    @AllowNull(false)
+    @Column
+    key2FA: string;
+
+
     @HasOne(()=> Profile)
     profile: Profile;
 

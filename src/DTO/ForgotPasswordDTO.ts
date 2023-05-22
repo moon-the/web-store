@@ -7,4 +7,6 @@ export class ForgotPasswordDTO {
     @IsNotEmpty()
     @IsEmail()
     email: string;
+
+    link: string;
 }

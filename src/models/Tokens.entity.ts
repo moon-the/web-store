@@ -15,6 +15,10 @@ export class Token extends Model {
     @Column
     refreshToken: string;
 
+    @AllowNull(false)
+    @Column
+    open: boolean;
+
     @ForeignKey(()=> Users)
     @Column
     idUser: number;
