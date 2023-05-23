@@ -11,21 +11,12 @@ import { OldTokenRepository } from "./Repositories/OldTokenRepository";
 import { Users } from "./Models/Users.entity";
 import { Token } from "./Models/Tokens.entity";
 import { OldToken } from "./Models/OldToken.entity";
-<<<<<<< HEAD
-import { UserLoginDTO } from "@app/common/authentication/UserLoginDTO";
-import { UserRegisterDTO } from "@app/common/authentication/UserRegisterDTO";
-import { ForgotPasswordDTO } from "@app/common/authentication/ForgotPasswordDTO";
-import { ResetPasswordDTO } from "@app/common/authentication/ResetPasswordDTO";
-import { ActivatedDTO } from "@app/common/authentication/activated.dto";
-import { ActivatedReponse } from "@app/common/authentication/activated-response";
-=======
 import { UserLoginDTO } from "@app/common/Authentication/UserLoginDTO";
 import { UserRegisterDTO } from "@app/common/Authentication/UserRegisterDTO";
 import { ForgotPasswordDTO } from "@app/common/Authentication/ForgotPasswordDTO";
 import { ResetPasswordDTO } from "@app/common/Authentication/ResetPasswordDTO";
 import { ActivatedDTO } from "@app/common/Authentication/activated.dto";
 import { ActivatedReponse } from "@app/common/Authentication/Responses/activated-response";
->>>>>>> main
 
 @Injectable()
 export class AuthenticationService {

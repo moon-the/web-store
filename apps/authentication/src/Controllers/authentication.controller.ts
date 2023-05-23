@@ -1,18 +1,11 @@
 import { Controller, Get } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
-<<<<<<< HEAD
-import { UserLoginDTO } from '@app/common/authentication/UserLoginDTO';
-import { AuthenticationService } from '../Services/authentication.service';
-import { UserRegisterDTO } from '@app/common/authentication/UserRegisterDTO';
-import { ActivatedDTO } from '@app/common/authentication/activated.dto';
-=======
 import { UserLoginDTO } from '@app/common/Authentication/UserLoginDTO';
 import { AuthenticationService } from '../Services/authentication.service';
 import { UserRegisterDTO } from '@app/common/Authentication/UserRegisterDTO';
 import { ActivatedDTO } from '@app/common/Authentication/activated.dto';
 import { ForgotPasswordDTO } from '@app/common/Authentication/ForgotPasswordDTO';
 import { ResetPasswordDTO } from '@app/common/Authentication/ResetPasswordDTO';
->>>>>>> main
 
 @Controller("authentication")
 export class AuthenticationController {
@@ -23,23 +16,6 @@ export class AuthenticationController {
     return this.authenticationService.login(login);
   }
 
-<<<<<<< HEAD
-  @MessagePattern({ cmd: 'login' })
-  async register(req: UserRegisterDTO) {
-    return this.authenticationService.register(req);
-  }
-
-  @MessagePattern({ cmd: 'login' })
-  async getPublicKey(req: UserRegisterDTO) {
-    return this.authenticationService.register(req);
-  }
-
-  @MessagePattern({ cmd: 'activated' })
-  async activated(req: ActivatedDTO) {
-    return this.authenticationService.activated(req);
-  }
-
-=======
   @MessagePattern({ cmd: 'register' })
   register(req: UserRegisterDTO) {
     return this.authenticationService.register(req);
@@ -95,6 +71,5 @@ export class AuthenticationController {
     return this.authenticationService.logout(logout.accessToken);
   }  
 
->>>>>>> main
 
 }

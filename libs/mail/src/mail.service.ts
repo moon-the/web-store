@@ -1,9 +1,4 @@
 import { Injectable } from '@nestjs/common';
-<<<<<<< HEAD
-
-@Injectable()
-export class MailService {}
-=======
 import { SendEmailDto } from './send-email.dto';
 import { ConfigService } from '@nestjs/config';
 import { OAuth2Client } from 'google-auth-library';
@@ -56,4 +51,3 @@ export class MailService {
         }
     }
 }
->>>>>>> main
