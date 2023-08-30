@@ -1,14 +1,13 @@
-import { IsNotEmpty, MinLength } from "class-validator";
+import { IsNotEmpty, MinLength } from 'class-validator';
 
 export class TokenDTO {
-  
-    refreshToken: string;
+  refreshToken: string;
 
-    info: string;
+  info: string;
 
-    ip: string;
+  ip: string;
 
-    mac: string;
+  mac: string;
 
-    idUser: number;
+  idUser: number;
 }

@@ -4,34 +4,32 @@ import { UserLoginDTO } from '@app/common/authentication/UserLoginDTO';
 import { AuthenticationService } from '../Services/authentication.service';
 import { CreateProfile } from '@app/common/authentication/CreateProfile.dto';
 
-@Controller("authentication")
+@Controller('authentication')
 export class ProfileController {
   constructor(private readonly authenticationService: AuthenticationService) {}
 
-
-  @MessagePattern({cmd: 'login'})
+  @MessagePattern({ cmd: 'login' })
   index(login: UserLoginDTO) {
     return this.authenticationService.login(login);
   }
 
-  @MessagePattern({cmd: 'login'})
+  @MessagePattern({ cmd: 'login' })
   store(profile: CreateProfile) {
-    return ;
+    return;
   }
 
-  @MessagePattern({cmd: 'login'})
+  @MessagePattern({ cmd: 'login' })
   edit() {
-    return ;
+    return;
   }
-  
-  @MessagePattern({cmd: 'login'})
+
+  @MessagePattern({ cmd: 'login' })
   update(login: UserLoginDTO) {
     return this.authenticationService.login(login);
   }
 
-  @MessagePattern({cmd: 'login'})
+  @MessagePattern({ cmd: 'login' })
   destroy(login: UserLoginDTO) {
     return this.authenticationService.login(login);
   }
-
 }

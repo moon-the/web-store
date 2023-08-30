@@ -14,17 +14,24 @@ export const databaseProviders = [
     inject: [ConfigService],
     useFactory: async (configService: ConfigService) => {
       const sequelize = new Sequelize({
-        dialect: configService.get("DB"),
-        host: configService.get<string>("DB_HOST"),
-        port: configService.get<number>("DB_PORT"),
-        username: configService.get<string>("DB_USER"),
-        password: configService.get<string>("DB_PASS"),
-        database: configService.get<string>("DB_DATABASE"),
+        dialect: configService.get('DB'),
+        host: configService.get<string>('DB_HOST'),
+        port: configService.get<number>('DB_PORT'),
+        username: configService.get<string>('DB_USER'),
+        password: configService.get<string>('DB_PASS'),
+        database: configService.get<string>('DB_DATABASE'),
       });
-      sequelize.addModels([Cookies, MetaData, OldToken, Profile, Roles, Token, Users
+      sequelize.addModels([
+        Cookies,
+        MetaData,
+        OldToken,
+        Profile,
+        Roles,
+        Token,
+        Users,
       ]);
       await sequelize.sync();
-      console.log(sequelize)
+      console.log(sequelize);
       return sequelize;
     },
   },

@@ -1,5 +1,4 @@
-import { IUser } from "@app/common/Authentication/IUser.interface";
-
+import { IUser } from '@app/common/Authentication/IUser.interface';
 
 export class SendEmailDto {
   constructor(

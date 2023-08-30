@@ -1,0 +1,27 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model FileAttribute {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  fileName  String   @db.VarChar(1028)
+  fileExt   String   @db.VarChar(64)
+  owner     Owner    @relation(fields: [ownerId], references: [id])
+  ownerId   Int      @unique
+}
+
+model Owner {
+  id            Int             @id @default(autoincrement())
+  nameOwner     String          @db.VarChar(50)
+  fileAttribute FileAttribute[]
+}

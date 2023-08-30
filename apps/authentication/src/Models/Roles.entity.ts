@@ -1,23 +1,33 @@
-import { Table, Column, Model, PrimaryKey, Unique, AllowNull, Length, AutoIncrement, HasOne, HasMany } from 'sequelize-typescript';
+import {
+  Table,
+  Column,
+  Model,
+  PrimaryKey,
+  Unique,
+  AllowNull,
+  Length,
+  AutoIncrement,
+  HasOne,
+  HasMany,
+} from 'sequelize-typescript';
 import { Users } from './Users.entity';
 
 @Table
 export class Roles extends Model {
-   
-    @PrimaryKey
-    @AutoIncrement
-    @Column
-    id: number;
+  @PrimaryKey
+  @AutoIncrement
+  @Column
+  id: number;
 
-    @Unique
-    @AllowNull(false)
-    @Column
-    name: string;
+  @Unique
+  @AllowNull(false)
+  @Column
+  name: string;
 
-    @AllowNull(false)
-    @Column
-    data: string;
+  @AllowNull(false)
+  @Column
+  data: string;
 
-    @HasMany(()=> Users)
-    users: Users[];
+  @HasMany(() => Users)
+  users: Users[];
 }

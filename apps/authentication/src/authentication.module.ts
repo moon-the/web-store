@@ -7,22 +7,26 @@ import type { RedisClientOptions } from 'redis';
 import { CacheModule } from '@nestjs/cache-manager';
 import { redisStore } from 'cache-manager-redis-yet';
 @Module({
-  imports: [DatabaseModule, ConfigModule.forRoot({
-    isGlobal: true,
-  }), CacheModule.registerAsync<RedisClientOptions>({
-    useFactory: async () => {
-      return {
-        store: await redisStore({
-          socket: {
-            host: "localhost",
-            port: 6379,
-          }
-        }),
-      };
-    },
-    isGlobal: true,
-  })],
+  imports: [
+    DatabaseModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    CacheModule.registerAsync<RedisClientOptions>({
+      useFactory: async () => {
+        return {
+          store: await redisStore({
+            socket: {
+              host: 'localhost',
+              port: 6379,
+            },
+          }),
+        };
+      },
+      isGlobal: true,
+    }),
+  ],
   controllers: [AuthenticationController],
   providers: [AuthenticationService],
 })
-export class AuthenticationModule { }
+export class AuthenticationModule {}

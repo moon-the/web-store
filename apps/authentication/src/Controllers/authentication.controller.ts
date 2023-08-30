@@ -5,9 +5,9 @@ import { AuthenticationService } from '../Services/authentication.service';
 import { UserRegisterDTO } from '@app/common/authentication/UserRegisterDTO';
 import { ActivatedDTO } from '@app/common/authentication/activated.dto';
 
-@Controller("authentication")
+@Controller('authentication')
 export class AuthenticationController {
-  constructor(private readonly authenticationService: AuthenticationService) { }
+  constructor(private readonly authenticationService: AuthenticationService) {}
 
   @MessagePattern({ cmd: 'login' })
   login(login: UserLoginDTO) {
@@ -28,6 +28,4 @@ export class AuthenticationController {
   async activated(req: ActivatedDTO) {
     return this.authenticationService.activated(req);
   }
-
-
 }
