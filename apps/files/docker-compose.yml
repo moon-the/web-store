@@ -10,10 +10,11 @@ services:
     volumes:
       - '.\mysql\data': /var/lib/mysql
 
-    # connect:    - server: db (service name)
-    #             - username: root
-    #             - password: 1234 (mysql_root_password)
-    # url phpmyadmin: localhost:port            
+  # connect:
+  # - server: db (service name)
+  # - username: root
+  # - password: 1234 (mysql_root_password)
+  # url phpmyadmin: localhost:port
   phpmyadmin:
     image: phpmyadmin
     restart: always
@@ -21,5 +22,3 @@ services:
       - 80:80
     environment:
       - PMA_ARBITRARY=1
-
-
