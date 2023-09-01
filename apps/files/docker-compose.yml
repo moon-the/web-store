@@ -8,7 +8,7 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - '.\mysql\data': /var/lib/mysql
+      - mysql_db:/var/lib/mysql
 
   # connect:
   # - server: db (service name)
@@ -22,3 +22,6 @@ services:
       - 80:80
     environment:
       - PMA_ARBITRARY=1
+
+volumes:
+  mysql_db:
